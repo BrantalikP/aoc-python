@@ -2,31 +2,19 @@
 def day2(file_name):
 	with open(file_name, 'r') as f:
 		data = f.read().splitlines()
-	cal = 0
-	for i in data:
-		value = recursiveSafe(i)
-		if value == True:
-			cal += 1
-	return cal
+	return sum(1 for line in data if recursiveSafe(line))
 
 
 def recursiveSafe(string: str):
 	nums = string.split(' ')
-	if isSafe(nums) == True:
+	if isSafe(nums):
 		return True
-	for i in range(len(nums)):
-		tmp = nums.copy()
-		tmp.pop(i)
-		if isSafe(tmp) == True:
-			return True
-	return False
+	return any(isSafe(nums[:i] + nums[i+1:]) for i in range(len(nums)))
 
 def isSafe(nums: list[int]) -> bool:
 	isDecreasing = None
-	for i in range(len(nums) - 1):
-		next_number = int(nums[i + 1])
-		current = int(nums[i])
-		if abs(current - next_number) > 3 or abs(current - next_number) < 1:
+	for current, next_number in zip(nums, nums[1:]):
+		if not 1 <= abs(current - next_number) <= 3:
 				return False
 		if current > next_number:
 			if isDecreasing == None:
