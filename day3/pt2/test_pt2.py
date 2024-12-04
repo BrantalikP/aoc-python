@@ -1,5 +1,5 @@
 import unittest
-from pt2 import main
+from pt1 import main
 
 class TestTemplate(unittest.TestCase):
 	def test_main(self):
